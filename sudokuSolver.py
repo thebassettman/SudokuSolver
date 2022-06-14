@@ -24,12 +24,10 @@ def nextValue(problem, i, j):
 		if(j == 8):
 			i += 1
 			j = 0
-			if(i > 8):
-				invalidProblem()
 		else:
 			j += 1
 
-		if(not problem[i][j][1]):
+		if(i == 9 or not problem[i][j][1]):
 			found = True;
 
 	return i, j
@@ -51,8 +49,6 @@ def readSudoku():
 		problemLine = problemFile.readline()
 		problemLineArr = readSudokuLine(problemLine)
 		problem.append(problemLineArr)
-
-	print(problem)
 	return problem
 
 def validEntry(problem, i, j, entry):
@@ -83,8 +79,41 @@ def validEntry(problem, i, j, entry):
 
 	return True
 
+def toString(problem):
+	output = ""
+	for i in range(9):
+		for j in range(9):
+			if(problem[i][j][0] == 0):
+				output += "x"
+			else:
+				output += str(problem[i][j][0])
+		output += "\n"
+	print(output)
+
+def solve(problem):
+	i, j = nextValue(problem, -1, 8)
+
+	found = False
+
+	while(not found):
+		for entry in range(problem[i][j][0] + 1, 11):
+			if(validEntry(problem, i, j, entry)):
+				problem[i][j][0] = entry
+				break
+
+		if(problem[i][j][0] == 10):
+			problem[i][j][0] = 0
+			i, j = prevValue(problem, i, j)
+			continue
+
+		if(problem[8][8][0] != 0):
+			print("Solution found!")
+			found = True
+
+		toString(problem)
+
+		i, j = nextValue(problem, i, j)
+
 problem = readSudoku()
 
-print(validEntry(problem, 0, 0, 2))
-print(validEntry(problem, 0, 0, 1))
-print(validEntry(problem, 0, 1, 7))
+solve(problem)
