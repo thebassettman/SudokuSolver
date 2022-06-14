@@ -108,9 +108,8 @@ def solve(problem):
 
 		if(problem[8][8][0] != 0):
 			print("Solution found!")
+			toString(problem)
 			found = True
-
-		toString(problem)
 
 		i, j = nextValue(problem, i, j)
 
